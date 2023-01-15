@@ -6,11 +6,9 @@ root = Tk()
 root.geometry('1378x968')
 root.title("Signal")
 
-# PL | ################### ŚCIEŻKI DO OBRAZÓW ####################
-# EN | ################### IMAGE PATHS ####################
+################### IMAGE PATHS ####################
 
-# PL | sygnały
-# EN | signals
+# signals
 
 signal_dark = PhotoImage(file = "img\signals\dark.png")
 signal_s1 = PhotoImage(file = "img\signals\s1.png")
@@ -29,7 +27,6 @@ signal_sz = PhotoImage(file = "img\signals\sz.png")
 signal_w24_dark = PhotoImage(file = "img\signals\w24_dark.png")
 signal_w24 = PhotoImage(file = "img\signals\w24.png")
 
-# PL | przebiegi
 # EN | routes
 
 route_A1_default = PhotoImage(file = "img\POC\A1_default.png")
@@ -57,11 +54,9 @@ route_A1_sz_2 = PhotoImage(file = "img\POC\A1_sz_2.png")
 route_A1_dark_1 = PhotoImage(file = "img\POC\A1_dark_1.png")
 route_A1_dark_2 = PhotoImage(file = "img\POC\A1_dark_2.png")
 
-# PL | ################### DEFINICJE PRZYCISKÓW I POLECEŃ ####################
-# EN | ################### BUTTONS DEFINITIONS AND COMMANDS ####################
+################### BUTTONS DEFINITIONS AND COMMANDS ####################
 
-# PL | sygnały
-# EN | signals
+# signals
 
 button_s2 = Button(root, text = "S2", bg = "lightgrey", state = NORMAL, command=lambda:[start_s2()])
 button_s2.place(x=490, y=20)
@@ -126,8 +121,7 @@ button_stop_sz.place(x=1200, y=20)
 button_stop_s1_failure = Button(root, text = "STOP", bg = "red", state = DISABLED, command=lambda:[stop_loop_dark()])
 button_stop_s1_failure.place(x=1200, y=50)
 
-# PL | przebiegi
-# EN | routes
+# routes
 
 button_A = Button(root, text = "A", bg = "lightgrey", height= 1, width=2, state = NORMAL, command=lambda:[button_A_clicked()])
 button_A.place(x=685, y=20)
@@ -165,8 +159,7 @@ button_set_route.place(x=840, y=20)
 button_release_route = Button(root, text = "Release route", height= 1, width=14, bg = "lightgrey", state = DISABLED, command=lambda:[release_route(), stop_loop()])
 button_release_route.place(x=840, y=50)
 
-# PL | ################### POCZĄTKOWE WARTOŚCI ZMIENNYCH GLOBALNYCH - INEKS PRZEBIEGU ####################
-# EN | ################### INIT GLOBAL VARIABLES - ROUTE INDEX ####################
+################### INIT GLOBAL VARIABLES - ROUTE INDEX ####################
 
 global r1
 global r2
@@ -176,8 +169,7 @@ r1 = 0
 r2 = 0
 r3 = 0
 
-# PL | ################### DEFINICJE FUNKCJI - GLOBALNE WŁAŚCIWOŚCI PRZYCISKÓW ####################
-# EN | ################### FUNCTIONS DEFINITIONS - GLOBAL BUTTONS PROPERTIES  ####################
+################### FUNCTIONS DEFINITIONS - GLOBAL BUTTONS PROPERTIES  ####################
 
 def buttons_disabled():
     button_s2["state"] = DISABLED
@@ -253,8 +245,7 @@ def buttons_enabled():
     button_sz["state"] = NORMAL
     button_sz["bg"] = "lightgrey"
 
-# PL | ################### DEFINICJE FUNKCJI - RYSOWANIE OBRAZÓW SYGNAŁÓW ####################
-# EN | ################### FUNCTIONS DEFINITIONS - SIGNALS IMAGES DRAWING  ####################
+################### FUNCTIONS DEFINITIONS - SIGNALS IMAGES DRAWING  ####################
 
 def draw_signal_dark():
     label = Label(root, image=signal_dark)
@@ -340,8 +331,7 @@ def draw_signal_w24():
     label = Label(root, image = signal_w24)
     label.place(x=0, y=438)
 
-# PL | ################### DEFINICJE FUNKCJI - RYSOWANIE OBRAZÓW PRZEBIEGÓW ####################
-# EN | ################### FUNCTIONS DEFINITIONS - ROUTES IMAGES DRAWING  ####################
+################### FUNCTIONS DEFINITIONS - ROUTES IMAGES DRAWING  ####################
 
 def draw_A1_default():
     label = Label(root, image = route_A1_default)
@@ -439,11 +429,9 @@ def draw_route_dark_2():
     label = Label(root, image = route_A1_dark_2)
     label.place(x=0, y=554)
 
-# PL | ################### DEFINICJE FUNKCJI - URUCHAMIANIE PĘTLI DLA SYGNAŁÓW MIGOWYCH ####################
-# EN | ################### FUNCTIONS DEFINITIONS - LOOPS INIT FOR BLINK SIGNALS  ####################
+################### FUNCTIONS DEFINITIONS - LOOPS INIT FOR BLINK SIGNALS  ####################
 
-# PL | pętla (While True) uruchamiana jest jako niezależny wątek działacy w tle dla sygnałów migowych
-# EN | a loop (While True) runs as a separate background thread for blink signals
+#  a loop (While True) runs as a separate background thread for a blink signals
 
 def init_loop_s3():
     t = Thread(target=start_loop_s3)
@@ -489,8 +477,7 @@ def init_loop_signal_dark():
     t = Thread(target=start_loop_dark)
     t.start()
 
-# PL | ################### DEFINICJE FUNKCJI - URUCHAMIANIE SYGNAŁÓW ####################
-# EN | ################### FUNCTIONS DEFINITIONS - SIGNALS INIT ####################
+################### FUNCTIONS DEFINITIONS - SIGNALS INIT ####################
 
 def start_s2():
     draw_s2()
@@ -500,14 +487,10 @@ def start_s2():
     button_s2["state"] = NORMAL
     button_s2["bg"] = "green"
 
-# PL | pętla (While True) uruchamiana jest gdy zmienna globalna 'stop' zmieni wartość na False. Pętla uruchamia na przemian dwa obrazy.
-# PL | Po zmianie wartości na True, sprawdzany jest dodatkowy warunek - jeśli zmienna globalna 'stop_dark' ma wartość True (brak uszkodzenia
-# PL | żarówki S1), to zmień sygnał na S1. Jeśli nie, to rozpocznij pętle dla sygnału ciemnego. Zapobiega to dodatkowemu wyświetleniu 
-# PL | sygnału S1 po wystąpieniu usterki w trakcie wyświetlania sygnału.
-# EN | a loop (While True) starts when global variable 'stop' change its value to False. The loop displays alternately two images. 
-# EN | After the variable has changed its value to True, addtional condition is checked - if global variable 'stop_dark' has value True 
-# EN | (S1 signal is not failed), then change signal to S1. If not, then starts loop for dark signal. It prevents displaying addtional S1 signal
-# EN | after S1 signal has failed during displaying other signal.
+# a loop (While True) starts when global variable 'stop' change its value to False. The loop displays alternately two images.
+# after the variable has changed its value to True, addtional condition is checked - if global variable 'stop_dark' has value True
+# (S1 signal is not failed), then change signal to S1. If not, then starts loop for dark signal. It prevents displaying addtional S1 signal
+# after S1 signal has failed during displaying other signal.
 
 def start_loop_s3():
     text_s3()
@@ -761,8 +744,7 @@ def start_loop_sz():
         else:
             start_loop_dark()
 
-# PL | sygnał zastępczy powinien wygasnąć po 90s od zainicjowania. Funkcja odlicza 90s i zmienia sygnał na S1. 
-# EN | call-on signal should stop after 90s since it has been initiated. The function counts from 90s and change signal do S1. 
+# call-on signal should stop after 90s since it has been initiated. The function counts from 90s and change signal do S1.
 
 def start_loop_counter_sz():
     global licznik_sz
@@ -813,8 +795,7 @@ def start_loop_dark():
         draw_A1_default()
         text_s1()
 
-# PL | ################### DEFINICJE FUNKCJI - WYGASZANIE SYGNAŁÓW ####################
-# EN | ################### FUNCTIONS DEFINITIONS - SIGNALS STOPPING ####################
+################### FUNCTIONS DEFINITIONS - SIGNALS STOPPING ####################
 
 def stop_loop():
     text_s1()
@@ -861,13 +842,10 @@ def stop_loop_dark():
     global stop_dark
     stop_dark = True
 
-# PL | ################### DEFINICJE FUNKCJI - PRZYCISKI DO DEFINIOWANIA DROGI PRZEBIEGU ####################
-# EN | ################### FUNCTIONS DEFINITIONS - BUTTONS FOR ROUTES DEFINING ####################
+################### FUNCTIONS DEFINITIONS - BUTTONS FOR ROUTES DEFINING ####################
 
-# PL | do grupy semaforów A, B, C, D przypisana jest zmienna globalna r1, do semaforów E i F - r2, a do grupy semaforów G, H, J, K - r3
-# PL | wybranie sekwencji danych semaforów powodouje utworzenie 3-cyfrowego inkesu przebiegu (funkcja set_route_index)
-# EN | for signals grup A, B, C, D, r1 global variale is assigned, for signal E and F - r2, for signals grup G, H, J, K - r3
-# EN | selectng a given signals sequence, creates a 3-digits route index (set_route_index function)
+# for signals grup A, B, C, D, r1 global variale is assigned, for signal E and F - r2, for signals grup G, H, J, K - r3
+# selectng a given signals sequence, creates a 3-digits route index (set_route_index function)
 
 def button_A_clicked():
     button_A["state"] == NORMAL
@@ -972,11 +950,9 @@ def button_K_clicked():
     button_J["state"] = DISABLED
     global r3
     r3 = 6
- 
-# PL | do grupy semaforów A, B, C, D przypisana jest zmienna globalna r1, do semaforów E i F - r2, a do grupy semaforów G, H, J, K - r3
-# PL | wybranie sekwencji danych semaforów powodouje utworzenie 3-cyfrowego inkesu przebiegu (funkcja set_route_index)
-# EN | for signals grup A, B, C, D, r1 global variale is assigned, for signal E and F - r2, for signals grup G, H, J, K - r3
-# EN | selectng a given signals sequence, creates a 3-digits route index (set_route_index function)
+
+# for signals grup A, B, C, D, r1 global variale is assigned, for signal E and F - r2, for signals grup G, H, J, K - r3
+# selectng a given signals sequence, creates a 3-digits route index (set_route_index function)
 
 def set_route_index():
     button_set_route["state"] = DISABLED
@@ -991,8 +967,7 @@ def set_route_index():
     r_str = r1_str + r2_str + r3_str
     route_index = int(r_str)
 
-# PL | funkcja zmienia indeks przebiegu do 000
-# EN | changing route index value to default 000
+# changing route index value to default 000
 
 def release_route():
     button_set_route["state"] = DISABLED
@@ -1063,9 +1038,7 @@ def set_route_disabled():
     draw_B1_default()
     draw_B2_default()
 
-# PL | funkcja dodatkowo blokuje możliwość wyboru początkowych sygnałów A, B, C lub D, gdy przebieg nie jest nastawiony (sprawdzana jest wartość
-# PL | zmiennej globalnej r1).
-# EN | the function additionaly block A, B, C and D signal buttons if route is not set (r1 global variable is checked)
+# the function additionaly block A, B, C and D signal buttons if route is not set (r1 global variable is checked)
 
 def set_route_disabled_if_not_set():
     global r1
@@ -1077,8 +1050,7 @@ def set_route_disabled_if_not_set():
         button_set_route["state"] = DISABLED
         button_release_route["state"] = DISABLED
 
-# PL | przyporządkowanie indeksów dróg przbiegów do sygnałów na semaforach
-# EN | assigning signals to given route indexes
+# assigning signals to given route indexes
 
 # s1 = [000]
 # s2 = [111, 222]
@@ -1098,8 +1070,7 @@ def set_route_disabled_if_not_set():
 # s12 = [614, 616, 624, 626]
 # s13 = [610, 620]
 
-# PL | ################### DEFINICJE FUNKCJI - URUCHAMIANIE SYGNAŁÓW I DRÓG PRZEBIEGÓW ####################
-# EN | ################### FUNCTIONS DEFINITIONS - SIGNALS AND ROUTES INIT ####################
+################### FUNCTIONS DEFINITIONS - SIGNALS AND ROUTES INIT ####################
 
 def draw_signal():
     if route_index == 111:
@@ -1347,8 +1318,7 @@ def draw_signal():
         draw_A2_track_2_2()
         start_s13()
 
-# PL | ################### DEFINICJE FUNKCJI - POLA TEKSTOWE ####################
-# EN | ################### FUNCTIONS DEFINITIONS - TEXT LABELS ####################
+################### FUNCTIONS DEFINITIONS - TEXT LABELS ####################
 
 def text_s1():
     text = Text(root, width = 65, height = 12)
@@ -1440,8 +1410,7 @@ def text_sz():
     text.place(x=828, y=335)
     text.insert('1.0', 'Sygnał Sz - sygnał zastępczy')
 
-# PL | funkcja umieszka w polu tekstowym licznik do wygaśnięcia sygnału sz
-# EN | the function puts sz signal counter into text box
+# the function puts sz signal counter into text box
 
 def text_sz_licznik():
     global licznik_sz
@@ -1460,8 +1429,7 @@ def text_usterka_s1_off():
     text = Text(root, width = 65, height = 12)
     text.place(x=828, y=335)
 
-# PL | ################### DEFINICJE FUNKCJI - RYSOWANIE OBRAZÓW PO STARCIE PROGRAMU ####################
-# EN | ################### FUNCTIONS DEFINITIONS - IMAGES DRAWING AFTER PROGRAM STARTING ####################
+################### FUNCTIONS DEFINITIONS - IMAGES DRAWING AFTER PROGRAM STARTING ####################
 
 draw_s1()
 draw_signal_w24_dark()
